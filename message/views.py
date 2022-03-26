@@ -21,17 +21,17 @@ def seachdb(request):
         if obj:
             if messgaelist.objects.get(code=code).typetf=='t':
                 t=messgaelist.objects.get(code=code).text
-                messgaelist.objects.get(code=code).delete()
+                # messgaelist.objects.get(code=code).delete()
                 return render(request,'../templates/index.html',{
-                    "bigtext":t,"ifbigtext":"true"
+                    "bigtext":t,"ifbigtext":"true","titles":settingslist.objects.get(key="title").val,"iftext":True
                 })
             else:
                 t=messgaelist.objects.get(code=code).file
                 # DEL_LIST.append(t)
                 # filedellist.objects.create()
-                messgaelist.objects.get(code=code).delete()
+                # messgaelist.objects.get(code=code).delete()
                 return render(request,'../templates/index.html',{
-                    "bigtext":"","ifbigtext":"true","bigfile":'/media/'+str(t),"filetext":"下载"
+                    "bigtext":"","ifbigtext":"true","bigfile":'/media/'+str(t),"iftext":False,"titles":settingslist.objects.get(key="title").val
                 })
         return render(request,'../templates/index.html',{
             "bigtext":"错误的提取码","ifbigtext":"true"
@@ -46,8 +46,8 @@ def uptext(request):
             if not messgaelist.objects.filter(code=t):
                 break
         messgaelist.objects.create(code=t,typetf='t',text=request.POST.get("text"))
-        return render(request,'../templates/index.html',{"codes":t,"ifcode":"true"})
-    return render(request,'../templates/index.html')
+        return render(request,'../templates/index.html',{"codes":t,"ifcode":"true","titles":settingslist.objects.get(key="title").val})
+    return render(request,'../templates/index.html',{"titles":settingslist.objects.get(key="title").val})
     
 def fileup(request):
     if request.method=='POST':
@@ -58,7 +58,7 @@ def fileup(request):
             if not messgaelist.objects.filter(code=t):
                 break
         messgaelist.objects.create(code=t,typetf='f',file=fobj)
-        return render(request,'../templates/index.html',{"codes":t,"ifcode":"true"})
+        return render(request,'../templates/index.html',{"codes":t,"ifcode":"true","titles":settingslist.objects.get(key="title").val})
     return render(request,'../templates/index.html')
 
 # Create your views here.

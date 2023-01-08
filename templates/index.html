@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Copy</title>
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+
+		}
+
+		body {
+			margin-top: 50px;
+			/* background-image: */
+			min-height: 80vh;
+			/* -webkit-linear-gradient(to top,rgba(86, 231, 250, 0.3) ,rgba(4, 169, 180, 0.6) 50%,rgba(6, 122, 168, 0.6) ), */
+			/* -moz-linear-gradient(to top,rgba(86, 231, 250, 0.3) ,rgba(4, 169, 180, 0.6) 50%,rgba(6, 122, 168, 0.6) ) , */
+			/* -webkit-gradient(linear,left top,left bottom,from(#3396c7),to(#29d6b5)); */
+			background-image: linear-gradient(to top, #29d6b5, #3396c7 50%, #29d6b5);
+			/* background-image: -webkit-gradient(linear,left top,left bottom,from(#29d6b5),#3396c7,to(#29d6b5)); */
+		}
+
+		#file_name {
+			width: 400px;
+			height: 30px;
+		}
+
+		a.input,
+		button.input {
+			width: 70px;
+			height: 30px;
+			line-height: 30px;
+			background: #5cb85c;
+			border-color: #4cae4c;
+			text-align: center;
+			display: inline-block;
+			overflow: hidden;
+			position: relative;
+			top: 10px;
+			position: relative;
+			top: -2px;
+			padding-top: 0px;
+		}
+
+		a.input:hover,
+		button.input:hover {
+			background: #449D44;
+			color: #ffffff;
+		}
+
+		a,
+		button {
+			text-decoration: none;
+			color: #FFF;
+		}
+
+		#file {
+			opacity: 0;
+			filter: alpha(opacity=0);
+			font-size: 100px;
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+
+		.titletext {
+			text-shadow: 1px 5px 20px beige;
+			color: black;
+		}
+
+		.helpwrap {
+			display: flex;
+			justify-content: center;
+			align-content: center;
+			flex-wrap: wrap;
+		}
+
+		.help {
+			display: flex;
+			/* justify-content: center; */
+			/* align-content: center; */
+			flex-wrap: wrap;
+			width: 50%;
+			padding: 10px;
+		}
+
+		.help p:last-child {
+			display: block;
+			/* justify-content: center;
+			align-content: center; */
+			/* flex-wrap: wrap; */
+			color: rgb(56, 56, 56);
+			text-shadow: rgb(160, 160, 160) 0px 0px 15px;
+		}
+
+		.help p:first-child {
+			display: block;
+			width: 100%;
+			text-align: center;
+			/* justify-content: center;
+			align-content: center; */
+			/* flex-wrap: wrap; */
+			font-size: 20pt;
+			color: rgb(107, 107, 107);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<nav class="navbar navbar-static-top navbar-fixed-top navbar-default navbar-inverse">
+			<div class="container">
+				<div class="navbar-header">
+					<a href="" class="navbar-brand">云分享</a>
+					<button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mynavbar">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<div id="mynavbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<!-- <li><a href="#fileup">上传文件</a></li>
+						<li><a href="#textup">上传文字</a></li> -->
+						<!-- <li><a href="">关于</a></li> -->
+					</ul>
+					<form class="navbar-form navbar-left .hidden-xs" role="search" method="get" action="/seachdb/">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="输入提取代码" name="code">
+						</div>
+						{% csrf_token %}
+						<button type="submit" class="btn btn-info"><span
+								class="glyphicon glyphicon glyphicon-floppy-open"></span></button>
+					</form>
+				</div>
+			</div>
+		</nav>
+		<div class="row hidden-lg hidden-md hidden-sm">
+			<div style="margin-left: 15px;">
+				<form class="navbar-form navbar-left" role="search" method="get" action="/seachdb/">
+					<div class="form-group pull-left">
+						<input type="text" class="form-control " placeholder="输入提取代码" name="code">
+					</div>
+					{% csrf_token %}
+					<button type="submit" class="btn btn-info pull-left"><span
+							class="glyphicon glyphicon glyphicon-floppy-open"></span></button>
+
+				</form>
+
+			</div>
+		</div>
+		<!--  -->
+		{% if ifbigtext %}
+		<script>window.onload = function () { $("#bigtext").click() }</script>
+		<div>
+			<button id='bigtext' style="display: none;" type="button" class="btn btn-primary" data-toggle="modal"
+				data-target=".bs-example-modal-lg"></button>
+			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+				style="margin-top:50px;padding: 10px;">
+				<div class="modal-dialog modal-lg" role="document">
+					{% if iftext %}
+					<div style="display:block;padding:10px;height:400px;border: #FFF 1px solid;border-radius: 5px;
+					background: #fff;overflow-y: auto;box-shadow:5px 5px 35px rgba(2,2,2,0.4)  ,-5px -5px 35px rgba(2,2,2,0.4) ;
+					">
+						{{bigtext|linebreaksbr}}
+					</div>
+					{% else %}
+					<div style="display:block;padding:10px;height:200px;border: #FFF 1px solid;border-radius: 5px;
+						background: #fff;overflow-y: hidden;box-shadow:5px 5px 35px rgba(2,2,2,0.4)  ,-5px -5px 35px rgba(2,2,2,0.4) ;
+						">
+						<a type="button" href="{{bigfile}}" style="color:#449D44" class="btn btn-default"
+							role="button">下载文件</a>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+		</div>
+		{% endif %}
+		{% if ifcode %}
+		<div class="bs-example bs-example-standalone" data-example-id="dismissible-alert-js" style="margin-top: 5px;">
+			<div class="alert alert-warning alert-dismissible fade in row" role="alert"
+				style="margin-left: 0px;margin-right: 0px;height: 100px;">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+						aria-hidden="true">×</span></button>
+				代码为<strong>{{codes}}</strong> 链接:
+				<div style="display: block;position: relative;padding-top: 5px;">
+					<input id="copytext" class="form-control " type="text" value="/seachdb/?code={{codes}}" readonly
+						style="position: absolute;">
+					<button id="copybtn" type="button" class="btn btn-default " style="position: absolute;right: 0px;">
+						<span class="glyphicon glyphicon-paste">复制</span></button>
+
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		<!--  -->
+		<div>
+			<h1 id="textup" class="titletext">分享文字</h1>
+			<form method="post" action="/uptext/">
+				{% csrf_token %}
+				<textarea name="text" style="width: 100%;height: 150px;padding: 5px;"></textarea>
+				<button class="btn btn-success" style="width: 100%;">提交</button>
+			</form>
+
+		</div>
+		<div style="height:150px;border: dotted rgb(34, 107, 34) 3px;padding: 5px 5px 5px 5px; margin-top: 20px;">
+			<h1 id="fileup" class="titletext">分享文件</h1>
+			<form enctype="multipart/form-data" method="post" action="/upfile/" onsubmit="return Iffileupok()">
+				{% csrf_token %}
+				<input type="text" id="file_name" readonly="readonly" value="请选择文件" />
+				<a href="javascript:void(0);" class="btn input">
+					浏览
+					<input type="file" id="file" name="file">
+				</a>
+				<button class="btn input">提交</button>
+			</form>
+		</div>
+	</div>
+	<div class="container">
+		<hr>
+		<div class="helpwrap">
+			<div class="help">
+				<p>分享文字</p>
+				<p>你可以通过这个功能将一些文字便捷地分享给别人，或在其他设备上获取内容。
+					首先在输入框中输入自己想要分享的文字，写完后再点击提交按钮，这时页面顶上会有一个提示框，
+					里面为你提供了两种分享的方式，你可以将分享码给别人，也可以点击复制按钮，将复制的链接发送给别人
+				</p>
+			</div>
+			<div class="help">
+				<p>分享文件</p>
+				<p>你可以通过这个功能将文件便捷地分享给别人，或在其他设备上获取文件。
+					首先点击浏览，选择文件，再点击提交按钮，这时页面顶上会有一个提示框，
+					里面为你提供了两种分享的方式，你可以将分享码给别人，也可以点击复制按钮，将复制的链接发送给别人
+				</p>
+			</div>
+			<div class="help">
+				<p>提取分享内容</p>
+				<p>如何查看其他人分享给你的文字或文件。
+					首先，在页面的顶端会有一个小输入框，输入别人给你的分享码，点击旁边的提交按钮，这时页面上会有别人上传的文字或下载按钮，
+					取决于别人上传的是文字还是文件，如果要关闭则点击一下黑色背景即可
+				</p>
+			</div>
+			<div class="help">
+				<p>其他</p>
+				<p>
+				<p>1.上传的文件大小需要小于5MB<br>2.分享的内容阅后即焚</p>
+				</p>
+
+			</div>
+
+		</div>
+	</div>
+	<script>
+		$(function () {
+			$("#file").change(function () {
+				var fileSize = this.files[0].size;
+				var size = fileSize / 1024 / 1024;
+				if (fileSize == 0) {
+					alert("不可上传空文件");
+					this.value = "";
+					return false;
+				}
+				if (size > 5) {
+					alert("文件大小不能大于5M,请将文件压缩后重试");
+					this.value = "";
+					return false;
+				} else {
+					$("#file_name").val($("#file").val());
+					console.log(typeof ($("#file").val()));
+					console.log($("#file").val());
+				}
+			})
+		});
+		function copyText() {
+			document.getElementById("copytext").select(); // 选择对象
+			document.execCommand("Copy"); // 执行浏览器复制命令
+			document.getElementById("copytext").blur()
+		}
+		document.getElementById('copybtn').onclick = function () {
+			copyText()
+		}
+
+		window.onload = function () {
+			const host = window.location.host;
+			const protol = window.location.protocol;
+			const curlink = document.getElementById("copytext").value
+			if (curlink.indexOf(host) == -1) {
+				document.getElementById("copytext").value = protol + "//" + host + document.getElementById("copytext").value
+			}
+		}
+
+		function Iffileupok() {
+			console.log($("#file").val())
+			if ($("#file").val() == "") {
+				alert("请选择文件");
+				return false;
+			} else {
+				return true;
+
+			}
+		}
+
+	</script>
+</body>
+
+</html>
